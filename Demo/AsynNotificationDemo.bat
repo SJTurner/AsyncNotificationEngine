@@ -1,0 +1,5 @@
+start TopShelfRuleEngineRunner.exe
+start TopShelfDashboardNotificationRunner.exe
+start TopShelfEmailNotificationRunner.exe
+start TopShelfSmsNotificationRunner.exe
+start SendMessageTest.exe
