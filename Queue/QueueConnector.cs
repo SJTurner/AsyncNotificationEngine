@@ -16,7 +16,7 @@ namespace Queue
         // Obtain these values from the Management Portal
         private const string Namespace = "thenoblehardymen";
         private const string IssuerName = "RootManageSharedAccessKey";
-        private const string IssuerKey = "LYiMjSVhqaTgbRYhqvxZ72ZNKyUV//KzrTY+PaQz5Ik=";
+        private const string IssuerKey = "";
 
         // The name of your queue
         private const string ProcessRuleQueueName = "ProcessRuleQueue";
