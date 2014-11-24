@@ -1,4 +1,10 @@
-﻿using RuleEngineService;
+﻿using Dto;
+using Ninject;
+using NotificationGeneratorService;
+using Queue;
+using RuleEngineService;
+using Rules;
+using Services;
 using Topshelf;
 
 namespace TopShelfRuleEngineRunner
@@ -7,11 +13,17 @@ namespace TopShelfRuleEngineRunner
     {
         static void Main(string[] args)
         {
+            IKernel kernel = new StandardKernel();
+
+            kernel.Load<QueueModule>();
+            kernel.Load<RulesEngineModule>();
+            kernel.Load<RulesModule>();
+
             HostFactory.Run(x =>                                
             {
                 x.Service<RuleEngine>(s =>                      
                 {
-                    s.ConstructUsing(name => new RuleEngine());    
+                    s.ConstructUsing(name => kernel.Get<RuleEngine>());    
                     s.WhenStarted(tc => tc.Start());             
                     s.WhenStopped(tc => tc.Stop());              
                 });

@@ -1,22 +1,18 @@
 ﻿using System;
+using System.Configuration;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 
 namespace Queue
 {
-    public static class QueueConnector
+    public class QueueConnector
     {
         // Thread-safe. Recommended that you cache rather than recreating it
         // on every request.
-        public static QueueClient ProcessRuleQueue;
-        public static QueueClient DashboardNotificationQueue;
-        public static QueueClient SmsNotificationQueue;
-        public static QueueClient EmailNotificationQueue;
-
-        // Obtain these values from the Management Portal
-        private const string Namespace = "thenoblehardymen";
-        private const string IssuerName = "RootManageSharedAccessKey";
-        private const string IssuerKey = "";
+        public QueueClient ProcessRuleQueue { get; set; }
+        public QueueClient DashboardNotificationQueue { get; set; }
+        public QueueClient SmsNotificationQueue { get; set; }
+        public QueueClient EmailNotificationQueue { get; set; }
 
         // The name of your queue
         private const string ProcessRuleQueueName = "ProcessRuleQueue";
@@ -24,31 +20,18 @@ namespace Queue
         private const string SmsNotificationQueueName = "SmsNotificationQueue";
         private const string EmailNotificationQueueName = "EmailNotificationQueue";
 
-        public static NamespaceManager CreateNamespaceManager()
-        {
-            // Create the namespace manager which gives you access to
-            // management operations
-            var uri = ServiceBusEnvironment.CreateServiceUri(
-                "sb", Namespace, String.Empty);
-            var tP = TokenProvider.CreateSharedAccessSignatureTokenProvider(
-                IssuerName, IssuerKey);
-            return new NamespaceManager(uri, tP);
-        }
 
-        static QueueConnector()
+
+        public QueueConnector()
         {
             Initialize();
         }
 
-        public static void Initialize()
+        private void Initialize()
         {
-            // Using Http to be friendly with outbound firewalls
-            ServiceBusEnvironment.SystemConnectivity.Mode =
-                ConnectivityMode.Http;
 
-            // Create the namespace manager which gives you access to 
-            // management operations
-            var namespaceManager = CreateNamespaceManager();
+            var connString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(connString);
 
             // Create the queue if it does not exist already
             if (!namespaceManager.QueueExists(ProcessRuleQueueName))

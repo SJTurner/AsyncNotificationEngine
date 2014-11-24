@@ -6,9 +6,9 @@ namespace DashboardNotificationService
 {
     public class DashboardNotificationEngine
     {
-        public DashboardNotificationEngine()
+        public DashboardNotificationEngine(QueueConnector queueConnector)
         {
-            QueueConnector.DashboardNotificationQueue.OnMessage(x =>
+            queueConnector.DashboardNotificationQueue.OnMessage(x =>
                 {
                     var message = x.GetBody<string>();
                     Console.WriteLine(message);

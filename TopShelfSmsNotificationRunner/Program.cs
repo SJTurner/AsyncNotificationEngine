@@ -1,4 +1,6 @@
-﻿using SmsNotificationEngineService;
+﻿using Ninject;
+using Queue;
+using SmsNotificationEngineService;
 using Topshelf;
 
 namespace TopShelfSmsNotificationRunner
@@ -7,11 +9,14 @@ namespace TopShelfSmsNotificationRunner
     {
         static void Main(string[] args)
         {
+            IKernel kernel = new StandardKernel();
+            kernel.Load<QueueModule>();
+            kernel.Load<SmsNotificationModule>();
             HostFactory.Run(x =>
             {
                 x.Service<SmsNotificationEngine>(s =>
                 {
-                    s.ConstructUsing(name => new SmsNotificationEngine());
+                    s.ConstructUsing(name => kernel.Get<SmsNotificationEngine>());
                     s.WhenStarted(tc => tc.Start());
                     s.WhenStopped(tc => tc.Stop());
                 });

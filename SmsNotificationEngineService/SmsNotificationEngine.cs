@@ -6,9 +6,9 @@ namespace SmsNotificationEngineService
 {
     public class SmsNotificationEngine
     {
-        public SmsNotificationEngine()
+        public SmsNotificationEngine(QueueConnector queueConnector)
         {
-            QueueConnector.SmsNotificationQueue.OnMessage(x =>
+            queueConnector.SmsNotificationQueue.OnMessage(x =>
             {
                 var message = x.GetBody<string>();
                 Console.WriteLine(message);

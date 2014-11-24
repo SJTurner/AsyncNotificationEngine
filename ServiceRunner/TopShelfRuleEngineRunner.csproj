@@ -32,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Ninject">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -52,9 +55,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dto\Dto.csproj">
+      <Project>{d62c0514-84ca-4b3d-b9d3-a08cbd2bf84f}</Project>
+      <Name>Dto</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NotificationGeneratorService\RuleEngineService.csproj">
       <Project>{24983907-ec68-46e8-a6a9-77418d6b2a5b}</Project>
       <Name>RuleEngineService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Queue\Queue.csproj">
+      <Project>{ebe7b26f-9567-4a69-b3ae-46bb02371865}</Project>
+      <Name>Queue</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Services\Rules.csproj">
+      <Project>{23ce3403-dbbd-4abf-a88d-97d5a8423d33}</Project>
+      <Name>Rules</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

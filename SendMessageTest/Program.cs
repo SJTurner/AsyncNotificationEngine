@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using Dto;
 using Microsoft.ServiceBus.Messaging;
 using Queue;
 
 namespace SendMessageTest
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
+            var queueConnector = new QueueConnector();
+
             Console.WriteLine("Select rule to queue (0 for birthday, 1 for I9)");
             while (true)
             {
@@ -18,11 +22,28 @@ namespace SendMessageTest
                     Console.WriteLine("Invalid entry");
                     continue;
                 }
+
+
+                var t = new Stopwatch();
+                t.Start();
+
                 var message = new CreateNotifactionMessage
                 {
                     RuleType = (RuleType)Convert.ToInt16(value)
                 };
-                QueueConnector.ProcessRuleQueue.Send(new BrokeredMessage(message));
+                try
+                {
+                    queueConnector.ProcessRuleQueue.SendAsync(new BrokeredMessage(message));
+                }
+                catch (Exception ex)
+                {
+
+                    Console.WriteLine(ex);
+                }
+
+                t.Stop();
+                Console.WriteLine(t.Elapsed);
+
             }
         }
     }

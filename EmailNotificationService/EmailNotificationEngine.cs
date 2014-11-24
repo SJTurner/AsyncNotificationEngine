@@ -6,9 +6,9 @@ namespace EmailNotificationService
 {
     public class EmailNotificationEngine
     {
-        public EmailNotificationEngine()
+        public EmailNotificationEngine(QueueConnector queueConnector)
         {
-            QueueConnector.EmailNotificationQueue.OnMessage(x =>
+            queueConnector.EmailNotificationQueue.OnMessage(x =>
             {
                 var message = x.GetBody<string>();
                 Console.WriteLine(message);
